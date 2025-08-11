@@ -9,7 +9,7 @@ namespace ConsoleHangmanApp.Actions
     public class GameMenu
     {
 
-        public GameMenu() {
+        public void ShowGameMenu() {
             Console.Clear();
             Console.WriteLine("\nHangman Game");
             Console.WriteLine("S. Start Game");
