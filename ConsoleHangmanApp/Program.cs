@@ -14,16 +14,19 @@ while (appIsRunning)
         case "s":
             Console.WriteLine("Starting the game...");
             StartGame startGame = new StartGame();
+            Console.Clear();
 
             for (int turns = 0; turns < 10; turns++)
             {
-                Console.Clear();
                 startGame.GetLetter();
+                startGame.DisplayCurrentState();
                 Console.WriteLine($"Turns left: {10 - turns}");
+
                 PausForKeyPress();
             }
             break;
         case "q":
+            Console.Clear();
             Console.WriteLine("Exiting the game...");
             PausForKeyPress();
             CloseApp closeApp = new CloseApp();

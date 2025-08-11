@@ -7,6 +7,7 @@ namespace ConsoleHangmanApp.Actions
     {
         string chooseWord = Words.GetRandomWord();
         char letter = ' ';
+        List<char> guessedLetters = new List<char>();
 
         public void GetLetter()
         {
@@ -16,7 +17,7 @@ namespace ConsoleHangmanApp.Actions
                 return;
             }
 
-            Console.WriteLine($"The word to guess is: {chooseWord}");
+            //Console.WriteLine($"The word to guess is: {chooseWord}");
 
             Console.WriteLine("Guess a letter:");
 
@@ -27,14 +28,14 @@ namespace ConsoleHangmanApp.Actions
                 return;
             }
 
-
+            // add the guessed letter to the list
+            guessedLetters.Add(letter);
 
             string letterString = letter.ToString().ToLower();
 
             Console.WriteLine();
             Console.WriteLine($"You guessed the letter: {letter.ToString().ToUpper()}");
             
-
             bool isLetterInWord = chooseWord.Contains(letterString);
 
             if (isLetterInWord)
@@ -60,13 +61,19 @@ namespace ConsoleHangmanApp.Actions
         { 
             foreach (char c in chooseWord)
             {
-                if (c == letter)
+                if (guessedLetters.Contains(char.ToLower(c)))
                 {
-                    Console.Write(c + " ");
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Green;
+                    Console.Write(c.ToString().ToUpper() + " ");
+                    Console.ResetColor();
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Black;
+                    Console.BackgroundColor = ConsoleColor.White;
                     Console.Write("_ ");
+                    Console.ResetColor();
                 }
             }
         }

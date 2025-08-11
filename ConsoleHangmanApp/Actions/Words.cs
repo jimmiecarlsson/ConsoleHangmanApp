@@ -12,15 +12,11 @@ namespace ConsoleHangmanApp.Actions
             words = new List<string>
             {
                 "äpple",
-                "bäck",
-                "cykel",
-                "dator",
                 "ekorre",
-                "fjäder",
-                "grusväg",
                 "himmel",
-                "isflak",
-                "jordgubbe"
+                "jordgubbe",
+                "katt",
+                "lampa"
             };
 
             // Randomly select a word from the list
