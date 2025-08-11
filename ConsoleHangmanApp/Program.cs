@@ -1,23 +1,26 @@
-﻿// See https://aka.ms/new-console-template for more information
-
+﻿
+using ConsoleHangmanApp.Actions;
 
 bool appIsRunning = true;
 
 while (appIsRunning)
 {
-Console.WriteLine("\nHangman Game");
-    Console.WriteLine("S. Start Game");
-    Console.WriteLine("Q. Exit");   
     
-    Console.Write("Choose an option: ");
-    string? input = Console.ReadLine();
+    string input = Console.ReadKey(true).KeyChar.ToString();
 
-    switch{
+    switch (input.ToLower()){
 
         case "s":
             Console.WriteLine("Starting the game...");
             // Here you would call the method to start the game
             // For example: StartGame();
+
+            string myWord = Words.GetRandomWord();
+
+            Console.WriteLine($"The word to guess is: {myWord}");
+
+            Console.ReadLine(); // Wait for user input before continuing
+
 
             break;
         case "q":
