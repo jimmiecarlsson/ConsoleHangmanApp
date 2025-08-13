@@ -66,6 +66,8 @@ namespace ConsoleHangmanApp.Actions
             string letterString = letter.ToString().ToLower();
             bool isLetterInWord = chooseWord.Contains(letterString);
 
+            bool alreadyGuessed = false;
+            
             if (isLetterInWord)
             {
                 for (int i = 0; i < correctGuessCount; i++)
@@ -73,14 +75,22 @@ namespace ConsoleHangmanApp.Actions
                     if (correctGuesses[i] != null && correctGuesses[i] == char.ToString(letter).ToLower())
                     {
                         Console.WriteLine($"You have already guessed the letter '{letter.ToString().ToUpper()}'.");
+                        alreadyGuessed = true;
+
                         return;
+
                     }
 
                 }
 
+                // If the letter is not already guessed, add it to the correct guesses
+                if (!alreadyGuessed) { 
+                    correctGuesses[correctGuessCount] = letter.ToString().ToLower();
+                    correctGuessCount++;
+                }
+             
                 Console.WriteLine($"Correct! The letter '{letter.ToString().ToUpper()}' is in the word.\n");
-                correctGuesses[correctGuessCount] = letter.ToString().ToLower();
-                correctGuessCount++;
+
             }
             else
             {
@@ -89,14 +99,20 @@ namespace ConsoleHangmanApp.Actions
                     if (incorrectGuesses[i] != null && incorrectGuesses[i] == char.ToString(letter).ToLower())
                     {
                         Console.WriteLine($"You have already guessed the letter '{letter.ToString().ToUpper()}'.");
+                        alreadyGuessed = true;
                         return;
                     }
 
                 }
 
+                // If the letter is not already guessed, add it to the incorrect guesses
+                if (!alreadyGuessed)
+                {
+                    incorrectGuesses[incorrectGuessCount] = letter.ToString().ToLower();
+                    incorrectGuessCount++;
+                }
+
                 Console.WriteLine($"Incorrect! The letter '{letter.ToString().ToUpper()}' is not in the word.\n");
-                incorrectGuesses[incorrectGuessCount] = letter.ToString().ToLower();
-                incorrectGuessCount++;
             }
 
 
