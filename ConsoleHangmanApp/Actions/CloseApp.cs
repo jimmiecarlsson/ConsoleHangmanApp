@@ -9,9 +9,10 @@ namespace ConsoleHangmanApp.Actions
         public void Close()
         {
             Console.Clear();
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("\nThank you for playing Hangman!");
-            Console.WriteLine("Press any key to exit...");
-            Console.ReadKey();
+            Console.ResetColor();
+            Console.WriteLine();
             Environment.Exit(0);
         }
     }
