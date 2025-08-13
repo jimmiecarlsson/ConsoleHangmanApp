@@ -7,9 +7,9 @@ namespace ConsoleHangmanApp.Actions
         public void ShowGameMenu() {
             Console.Clear();
             string[] menuText = { 
-                "\nHangman Game!",
+                "Hangman Game!\n",
                 "S. Start Game",
-                "Q. Exit",
+                "Q. Exit\n",
                 "Choose an option: "
             };
         

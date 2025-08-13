@@ -13,6 +13,45 @@ namespace ConsoleHangmanApp.Actions
         string[] correctGuesses = new string[10];
         int correctGuessCount = 0;
 
+        bool wordGuessed = false;
+
+        // Properties to access the game state to the main program
+        public int AttemptsUsed
+        {
+            get
+            {
+                return correctGuessCount + incorrectGuessCount;
+            }
+        }
+        public bool IsWon
+        {
+            get
+            {
+                // Check if the word has been guessed
+                if (wordGuessed) { 
+                    return true;
+                }
+
+                // Check if all letters in the word have been guessed
+                foreach (char c in chooseWord)
+                {
+                    if (!guessedLetters.Contains(char.ToLower(c)))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+        }
+
+        public string WordToGuess
+        {
+            get
+            {
+                return chooseWord;
+            }
+        }
+
 
         public void GetLetter()
         {
@@ -22,27 +61,45 @@ namespace ConsoleHangmanApp.Actions
                 return;
             }
 
-            //Console.WriteLine($"The word to guess is: {chooseWord}");
             Console.Clear();
-            Console.WriteLine("Guess a letter or \npress SPACE to guess the whole word:");
+            DisplayCurrentState();
+
+            Console.WriteLine("\n\nGuess a letter or press SPACE\nto guess the whole word:");
 
             letter = Console.ReadKey().KeyChar;
 
             // Check if the input is a space character
             if (letter == ' ')
             {
+                Console.ForegroundColor = ConsoleColor.Magenta;
                 Console.WriteLine("\nYou chose to guess the whole word.");
                 Console.Write("Please enter your guess: ");
-            
+                Console.ResetColor();
+
                 string wordGuess = Console.ReadLine().ToLower();
                 
                 if (wordGuess == chooseWord)
                 {
-                    CheckWinCondition();
+                    wordGuessed = true;
+                    DisplayWinCondition();
                 }
                 else
                 {
+                    if (wordGuess == null)
+                    {
+                       wordGuess = "";
+                    }
+                    
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine($"Sorry, '{wordGuess.ToUpper()}' is not the correct word.");
+                    Console.ResetColor();
+
+                    if (incorrectGuessCount < maxAttempts)
+                    {
+                        incorrectGuesses[incorrectGuessCount] = wordGuess.ToLower();
+                        incorrectGuessCount++;
+                    }
+                   
                 }
                 return;
             }
@@ -59,6 +116,7 @@ namespace ConsoleHangmanApp.Actions
             guessedLetters.Add(char.ToLower(letter));
 
             // Print the guessed letter
+            Console.Clear();
             Console.WriteLine();
             Console.WriteLine($"You guessed the letter: {letter.ToString().ToUpper()}");
 
@@ -74,7 +132,9 @@ namespace ConsoleHangmanApp.Actions
                 {
                     if (correctGuesses[i] != null && correctGuesses[i] == char.ToString(letter).ToLower())
                     {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"You have already guessed the letter '{letter.ToString().ToUpper()}'.");
+                        Console.ResetColor();
                         alreadyGuessed = true;
 
                         return;
@@ -88,9 +148,10 @@ namespace ConsoleHangmanApp.Actions
                     correctGuesses[correctGuessCount] = letter.ToString().ToLower();
                     correctGuessCount++;
                 }
-             
-                Console.WriteLine($"Correct! The letter '{letter.ToString().ToUpper()}' is in the word.\n");
-
+                
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nCorrect! The letter '{letter.ToString().ToUpper()}' is in the word.\n");
+                Console.ResetColor();
             }
             else
             {
@@ -98,7 +159,9 @@ namespace ConsoleHangmanApp.Actions
                 {
                     if (incorrectGuesses[i] != null && incorrectGuesses[i] == char.ToString(letter).ToLower())
                     {
+                        Console.ForegroundColor = ConsoleColor.Yellow;
                         Console.WriteLine($"You have already guessed the letter '{letter.ToString().ToUpper()}'.");
+                        Console.ResetColor();
                         alreadyGuessed = true;
                         return;
                     }
@@ -111,26 +174,40 @@ namespace ConsoleHangmanApp.Actions
                     incorrectGuesses[incorrectGuessCount] = letter.ToString().ToLower();
                     incorrectGuessCount++;
                 }
-
-                Console.WriteLine($"Incorrect! The letter '{letter.ToString().ToUpper()}' is not in the word.\n");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"\nIncorrect! The letter '{letter.ToString().ToUpper()}' is not in the word.\n");
+                Console.ResetColor();
             }
 
 
         }
 
-        public void CheckWinCondition()
+        public void DisplayWinCondition()
         {
-
-            Console.WriteLine($"Congratulations! You guessed the word '{chooseWord.ToUpper()}' correctly!");
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.BackgroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nCongratulations! You guessed the word {chooseWord.ToUpper()} correctly!");
+            Console.ResetColor();
         }
         public void DisplayCurrentState()
         {
-            Console.WriteLine("\nCorrect choosen letters.");
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.BackgroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Hangman Game!");
+            Console.ResetColor();
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine($"Attempts used: {AttemptsUsed} of {maxAttempts}");
+            Console.ResetColor();
+            Console.WriteLine("\nThe word");
 
             foreach (char c in chooseWord)
             {
+                // Primary display
+
                 if (guessedLetters.Contains(char.ToLower(c)))
                 {
+                    // Display the correct letter in green
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Green;
                     Console.Write(c.ToString().ToUpper() + " ");
@@ -138,28 +215,70 @@ namespace ConsoleHangmanApp.Actions
                 }
                 else
                 {
+                    // Display an underscore for unguessed letters
                     Console.ForegroundColor = ConsoleColor.Black;
                     Console.BackgroundColor = ConsoleColor.White;
                     Console.Write("_ ");
                     Console.ResetColor();
                 }
             }
-            Console.WriteLine("\nIncorrect choosen letter so far.");
-            for (int i = 0; i < incorrectGuessCount+1; i++)
+            Console.WriteLine();
+
+            // Display incorrect letters
+
+            bool anyWrongLetters = false;
+            for (int i = 0; i < incorrectGuessCount + 1; i++)
             {
-                if (incorrectGuesses[i] != "")
+                if (incorrectGuesses[i] != null && incorrectGuesses[i].Length == 1)
                 {
+                    if (!anyWrongLetters)
+                    {
+                        Console.Write("\nIncorrect letters: ");
+                        anyWrongLetters = true;
+                    }
+                    // Display the incorrect letter in red
+
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Red;
-                    Console.Write(incorrectGuesses[i] + " ");
+                    Console.Write(incorrectGuesses[i].ToUpper());
                     Console.ResetColor();
+                    
                 }
-                else
+               
+            }
+            Console.WriteLine();
+
+            // Display incorrect words in red
+
+            bool anyWrongWords = false;
+            for (int i = 0; i < incorrectGuessCount; i++)
+            {
+                if (incorrectGuesses[i] != null && incorrectGuesses[i].Length > 1)
                 {
-                    Console.WriteLine("No guesses are incorrect still.");
+                    if (!anyWrongWords)
+                    {
+                        Console.Write("\nIncorrect words: ");
+                        anyWrongWords = true;
+                    }
+                    
+                    // Display the incorrect word in red    
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.Write(incorrectGuesses[i].ToUpper());
+                    Console.ResetColor();
+                    Console.Write(" ");
                 }
             }
-            Console.WriteLine(" ");
+
+            //Console.WriteLine();
+
+            if (!anyWrongWords)
+            {
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\nIncorrect words: (none)");
+                Console.ResetColor();
+            }
+
         }
     }
 }

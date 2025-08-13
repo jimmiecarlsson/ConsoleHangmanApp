@@ -12,18 +12,38 @@ while (appIsRunning)
     switch (input.ToLower()){
 
         case "s":
-            Console.WriteLine("Starting the game...");
             StartGame startGame = new StartGame();
             Console.Clear();
 
-            for (int turns = 0; turns < 10; turns++)
+            while (startGame.AttemptsUsed < 10 && !startGame.IsWon)
             {
                 startGame.GetLetter();
-                startGame.DisplayCurrentState();
-                Console.WriteLine($"Turns left: {10 - turns}");
+                //startGame.DisplayCurrentState();
+                Console.WriteLine($"Turns left: {10 - startGame.AttemptsUsed}");
 
                 PausForKeyPress();
             }
+
+            if (startGame.IsWon)
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"Congratulations, you won! The word was: {startGame.WordToGuess.ToUpper()}");
+                Console.ResetColor();
+
+                PausForKeyPress();
+
+            }
+            else
+            {
+                Console.Clear();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine($"GAME OVER! The word was: {startGame.WordToGuess.ToUpper()}");
+                Console.ResetColor();
+                
+                PausForKeyPress();
+            }
+
             break;
         case "q":
             Console.Clear();
@@ -42,8 +62,10 @@ while (appIsRunning)
 
     static void PausForKeyPress()
     {
+        Console.ForegroundColor = ConsoleColor.Yellow;
         Console.WriteLine("Press any key to continue...");
         Console.ReadKey(true);
+        Console.ResetColor();
     }
 
 
