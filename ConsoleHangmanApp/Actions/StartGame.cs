@@ -234,42 +234,78 @@ namespace ConsoleHangmanApp.Actions
 
             // Display incorrect letters
 
-            bool anyWrongLetters = false;
-            for (int i = 0; i < incorrectGuessCount + 1; i++)
-            {
-                if (incorrectGuesses[i] != null && incorrectGuesses[i].Length == 1)
-                {
-                    if (!anyWrongLetters)
-                    {
-                        Console.Write("\nIncorrect letters: ");
-                        anyWrongLetters = true;
-                    }
-                    // Display the incorrect letter in red
+            PrintIncorrectLetters();
 
-                    Console.ForegroundColor = ConsoleColor.White;
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.Write(incorrectGuesses[i].ToUpper());
-                    Console.ResetColor();
-                    
-                }
-               
-            }
+            //bool anyWrongLetters = false;
+            //for (int i = 0; i < incorrectGuessCount + 1; i++)
+            //{
+            //    if (incorrectGuesses[i] != null && incorrectGuesses[i].Length == 1)
+            //    {
+            //        if (!anyWrongLetters)
+            //        {
+            //            Console.Write("\nIncorrect letters: ");
+            //            anyWrongLetters = true;
+            //        }
+            //        // Display the incorrect letter in red
+
+            //        Console.ForegroundColor = ConsoleColor.White;
+            //        Console.BackgroundColor = ConsoleColor.Red;
+            //        Console.Write(incorrectGuesses[i].ToUpper());
+            //        Console.ResetColor();
+
+            //    }
+
+            //}
+
             Console.WriteLine();
 
-            // Display incorrect words in red
+            PrintIncorrectWords();
 
-            bool anyWrongWords = false;
+            //// Display incorrect words in red
+
+            //bool anyWrongWords = false;
+            //for (int i = 0; i < incorrectGuessCount; i++)
+            //{
+            //    if (incorrectGuesses[i] != null && incorrectGuesses[i].Length > 1)
+            //    {
+            //        if (!anyWrongWords)
+            //        {
+            //            Console.Write("\nIncorrect words: ");
+            //            anyWrongWords = true;
+            //        }
+
+            //        // Display the incorrect word in red    
+            //        Console.ForegroundColor = ConsoleColor.White;
+            //        Console.BackgroundColor = ConsoleColor.Red;
+            //        Console.Write(incorrectGuesses[i].ToUpper());
+            //        Console.ResetColor();
+            //        Console.Write(" ");
+            //    }
+            //}
+
+            ////Console.WriteLine();
+
+            //if (!anyWrongWords)
+            //{
+            //    Console.ForegroundColor = ConsoleColor.Green;
+            //    Console.WriteLine("\nIncorrect words: (none)");
+            //    Console.ResetColor();
+            //}
+
+        }
+
+        private void PrintIncorrectLetters()
+        {
+            bool any = false;
             for (int i = 0; i < incorrectGuessCount; i++)
             {
-                if (incorrectGuesses[i] != null && incorrectGuesses[i].Length > 1)
+                if (!string.IsNullOrEmpty(incorrectGuesses[i]) && incorrectGuesses[i].Length == 1)
                 {
-                    if (!anyWrongWords)
+                    if (!any)
                     {
-                        Console.Write("\nIncorrect words: ");
-                        anyWrongWords = true;
+                        Console.Write("\nIncorrect letters: ");
+                        any = true;
                     }
-                    
-                    // Display the incorrect word in red    
                     Console.ForegroundColor = ConsoleColor.White;
                     Console.BackgroundColor = ConsoleColor.Red;
                     Console.Write(incorrectGuesses[i].ToUpper());
@@ -277,16 +313,35 @@ namespace ConsoleHangmanApp.Actions
                     Console.Write(" ");
                 }
             }
-
-            //Console.WriteLine();
-
-            if (!anyWrongWords)
+            if (!any)
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("\nIncorrect words: (none)");
-                Console.ResetColor();
+                Console.WriteLine("\nIncorrect letters: (none)");
             }
+        }
 
+        private void PrintIncorrectWords()
+        {
+            bool any = false;
+            for (int i = 0; i < incorrectGuessCount; i++)
+            {
+                if (!string.IsNullOrEmpty(incorrectGuesses[i]) && incorrectGuesses[i].Length > 1)
+                {
+                    if (!any)
+                    {
+                        Console.Write("\nIncorrect words: ");
+                        any = true;
+                    }
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.Write(incorrectGuesses[i].ToUpper());
+                    Console.ResetColor();
+                    Console.Write(" ");
+                }
+            }
+            if (!any)
+            {
+                Console.WriteLine("\nIncorrect words: (none)");
+            }
         }
     }
 }
