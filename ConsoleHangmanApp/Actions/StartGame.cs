@@ -61,10 +61,7 @@ namespace ConsoleHangmanApp.Actions
                 return;
             }
 
-            Console.Clear();
-            DisplayCurrentState();
-
-            Console.WriteLine("\n\nGuess a letter or press SPACE\nto guess the whole word:");
+            DisplayPrompt();
 
             letter = Console.ReadKey().KeyChar;
 
@@ -181,6 +178,17 @@ namespace ConsoleHangmanApp.Actions
 
 
         }
+
+        private void DisplayPrompt()
+        {
+            Console.Clear();
+            DisplayCurrentState();
+
+            // Prompten för inmatning
+            Console.WriteLine("Guess a letter or");
+            Console.WriteLine("press SPACE to guess the whole word:");
+        }
+
 
         public void DisplayWinCondition()
         {

@@ -18,9 +18,6 @@ while (appIsRunning)
             while (startGame.AttemptsUsed < 10 && !startGame.IsWon)
             {
                 startGame.GetLetter();
-                //startGame.DisplayCurrentState();
-                Console.WriteLine($"Turns left: {10 - startGame.AttemptsUsed}");
-
                 PausForKeyPress();
             }
 
