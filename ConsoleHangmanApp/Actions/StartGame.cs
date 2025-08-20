@@ -53,6 +53,7 @@ namespace ConsoleHangmanApp.Actions
 
         public void GetLetter()
         {
+            // Check if the word to guess is null or empty
             if (chooseWord == null || chooseWord.Length == 0)
             {
                 Console.WriteLine("The word to guess is empty or null. Please restart the game.");
